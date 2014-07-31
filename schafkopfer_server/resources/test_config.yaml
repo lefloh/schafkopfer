@@ -1,0 +1,3 @@
+serverPort: 4848
+mongoUrl: mongodb://localhost/schafkopfer_test
+mongoPoolSize: 5

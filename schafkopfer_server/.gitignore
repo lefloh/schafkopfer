@@ -1,0 +1,11 @@
+packages/
+*.js_
+*.js.deps
+*.js.map 
+*.dart.js
+.project
+.buildlog
+*~
+.DS_Store
+._.*
+build

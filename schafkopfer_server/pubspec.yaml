@@ -1,0 +1,15 @@
+name: schafkopfer_server
+description: RESTful server for schafkopfer
+dependencies:
+  connection_pool: any
+  http_server: any
+  intl: any
+  logging: any
+  logging_handlers: any
+  mongo_dart: any
+  route: any
+  schafkopfer_api:
+    path: ../schafkopfer_api
+  yaml: any
+dev_dependencies:
+  unittest: any
