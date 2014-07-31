@@ -1,0 +1,8 @@
+name: schafkopfer_api
+description: Api for the Schafkopfer
+dependencies:
+  bson: any
+  intl: any
+  route: any
+dev_dependencies:
+  unittest: any
