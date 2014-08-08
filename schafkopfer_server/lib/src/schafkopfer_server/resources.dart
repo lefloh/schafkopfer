@@ -3,7 +3,7 @@ part of schafkopfer_server;
 /// Handles HTTP Requests
 
 void root(HttpRequest request) {
-  _sendText(request, 200, 'SchafkopferServer up and running :)');
+  _sendText(request, 200, 'SchafkopferServer up and running');
 }
 
 void newMatch(HttpRequest request) {
