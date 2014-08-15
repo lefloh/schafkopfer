@@ -98,7 +98,7 @@ class Documents {
         _pool.releaseConnection(managedConnection);
         return new Future.value(result);
       }).catchError((e) {
-        _log.severe('Error executing DB statement: ${e.toString()}');
+        _log.severe('Error executing DB statement - ${e.toString()}: \n${e.stackTrace}');
         _pool.releaseConnection(managedConnection);
       });
     });

@@ -1,10 +1,9 @@
 part of schafkopfer_api;
 
 final _dateFormat = new DateFormat("dd.MM.yyyy");
+final _currencyFormat = new NumberFormat.currencyPattern('de_DE');
 
 /// Mapping of PODOs to MongoDocuments and JSON-Objects
-
-class Mapper{}
 
 // Player
 List<Player> namesToPlayers(List<String> names)
@@ -28,6 +27,9 @@ List<Map> playersToMaps(List<Player> players)
 List<Player> mapsToPlayers(List<Map> maps) 
   => maps.map((map) => new Player(ObjectId.parse(map['id']), map['name'])).toList();
 
+List<String> playersToNames(List<Player> players)
+  => players.map((player) => player.name).toList();
+
 // Game
 Map gameToDocument(Game game) => {
   '_id' : game.id,
@@ -39,18 +41,28 @@ Map gameToDocument(Game game) => {
 };
 
 List<Map> gamesToMaps(List<Game> games) => 
-    games.map((game) => {
-      'id' : game.id.toHexString(),
-      'type' : game.type.value,
-      'rating' : game.rating.value,
-      'laufende' : game.laufende,
-      'leger' : game.leger,
-      'winners' : playersToMaps(game.winners)
-  }).toList();
+    games.map((game) => gameToMap(game)).toList();
 
-String gameToJson(Game game) => JSON.encode(gamesToMaps([game])[0]);
+Map gameToMap(game) => {
+    'id' : game.id.toHexString(),
+    'type' : game.type.value,
+    'rating' : game.rating.value,
+    'laufende' : game.laufende,
+    'leger' : game.leger,
+    'winners' : playersToMaps(game.winners)
+};
 
-String gamesToJson(List<Game> games) => JSON.encode(gamesToMaps(games));
+String gameToJson(Game game) => JSON.encode(gameToMap(game));
+
+String gamesWithResultsToJson(Map<Game, int> results) {
+  var gameArray = [];
+  results.forEach((game, result) {
+    var mappedGame = gameToMap(game);
+    mappedGame['result'] = result;
+    gameArray.add(mappedGame);
+  });
+  return JSON.encode(gameArray);
+}
 
 Game documentToGame(Map map, List players) 
   => new Game(map['_id'])
@@ -110,3 +122,6 @@ String resultToJson(Map<Player, int> map) {
 String formatDate(DateTime date) => _dateFormat.format(date);
 
 DateTime parseDate(String date) => _dateFormat.parse(date);
+
+// Currency
+String formatAmount(num number) => _currencyFormat.format(number);

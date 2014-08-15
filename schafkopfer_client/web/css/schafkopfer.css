@@ -1,0 +1,95 @@
+body {
+  background-color: #F8F8F8;
+}
+
+header {
+  height: 80px;
+  line-height: 80px;
+  font-size: 36px;
+  font-family: 'Lobster', cursive;
+  background-color: #fff;
+  color: #333;
+  text-align: center;
+  transition: height 0.2s;
+  border-bottom: 1px solid #f6f6f6;
+}
+
+header a, header a:hover, header a:focus, header a:visited {
+  color: #333;
+  text-decoration: none;
+}
+
+main {
+  position: relative;
+}
+
+article {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+article p.lead {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+article#start input, article button {
+  margin: 20px 0;
+}
+
+table {
+  margin-top: 40px;
+}
+
+table th {
+  text-align: center;
+}
+
+table td {
+  text-align: right;
+}
+
+/* Helper */
+
+.fade-in {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s linear;
+}
+
+.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s .2s, opacity .2s linear;
+}
+
+.non-active {
+  background-color: #fff !important;
+}
+
+/* smartphones */
+
+@media(max-width:767px) {
+  
+  table {
+    margin: 10px 0;
+  }
+  
+  article#play p.lead {
+    margin: 10px 0;
+    font-size: 20px;
+  }
+  
+  article#play .form-group {
+    margin-bottom: 5px;
+  }
+  
+  #modal .modal-body {
+    max-height: 350px;
+    overflow: scroll;
+  }
+  
+}

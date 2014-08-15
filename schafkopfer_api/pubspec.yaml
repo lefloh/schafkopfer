@@ -1,5 +1,8 @@
 name: schafkopfer_api
+version: 1.0.0
+author: Florian Hirsch
 description: Api for the Schafkopfer
+homepage: utkast.de/schafkopfer
 dependencies:
   bson: any
   intl: any

@@ -22,3 +22,12 @@ bool validateNames(List<String> names) {
 bool validateName(String name) {
   return namePattern.hasMatch(name);
 }
+
+bool validateGame(Game game) {
+  return game.type != null
+      && game.rating != null
+      && game.laufende >= 0 && game.laufende < 9
+      && game.leger >= 0
+      && game.winners != null
+      && game.type == GameType.RUF ? game.winners.length == 2 : game.winners.length == 1;
+}
