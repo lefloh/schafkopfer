@@ -1,6 +1,5 @@
-schafkopfer
-===========
+# schafkopfer
 
 dart powered schafkopf calculator
 
-Work in Progress...
+Start client and server with run-local.sh or try it [here](http://utkast.de/schafkopfer/).

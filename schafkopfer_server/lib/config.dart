@@ -36,7 +36,7 @@ class Config {
   int get mongoPoolSize => _config['mongoPoolSize'];
   
   static Map _loadConfig(String fileName) {
-    String filePath = _rootDir.path + '/resources/' + fileName;
+    String filePath = _rootDir.path + '/configs/' + fileName;
     String conf = new File(filePath).readAsStringSync();
     _logger.info('Using config $filePath:\n$conf');
     return loadYaml(conf);

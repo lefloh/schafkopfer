@@ -9,6 +9,9 @@ abstract class Enum<T> {
   T get value => _value;
   
   static Enum _fromValue(List<Enum> values, value) {
+    if (value == null) {
+      return null;
+    }
     for (var val in values) {
       if (val._value == value) {
         return val;
@@ -91,7 +94,9 @@ class Game {
   
   Game(this.id);
   
-  toString() => '${type.value} - ${rating.value} - winners: ${winners.map((p) => p.name).toList()}'; 
+  toString() => 'Type ${type != null ? type.value : 'null'}' 
+                  + ' - Rating ${rating != null ? rating.value : 'null'}' 
+                  + ' - winners: ${winners.map((p) => p.name).toList()}'; 
 
 }
 

@@ -14,7 +14,7 @@ void newMatch(HttpRequest request) {
     var json = JSON.decode(payload.toString());
     var playerNames = json['players'];
     if (!validateNames(playerNames)) {
-      _sendText(request, 404, 'Error creating match for $playerNames');
+      _sendText(request, 400, 'Error creating match for $playerNames');
       return;
     }
     new Documents().createMatch(playerNames).then((match) {  
@@ -36,7 +36,7 @@ void findMatch(HttpRequest request) {
       _sendText(request, 404, 'Match "$id" not found');
       return;
     }
-    _sendJson(request, matchToJson(match));
+    _sendJson(request, 200, matchToJson(match));
   }).catchError((e) => _handleError(request, 'Error serving match $id: ${e.toString()}'));  
 }
 
@@ -47,10 +47,15 @@ void newGame(HttpRequest request) {
   var matchId = urls.newGame.parse(request.uri.path)[0];
   UTF8.decodeStream(request).then((payload) {
     var game = jsonToGame(payload.toString());
+    if (!validateGame(game)) {
+      _sendText(request, 400, 'Invalid game');
+      return;
+    }
+    
     new Documents().createGame(ObjectId.parse(matchId), game).then((game) {  
       request.response.headers.add('Location', urls.GAMES + game.id.toHexString());
-      request.response.statusCode = 201;
-      request.response.close();
+      var result = new _Calculator().calculate(game);
+      _sendJson(request, 201, JSON.encode({ 'result' : result }));
     });
   }).catchError((e) => _handleError(request, 'Error decoding game: ${e.toString()}'));
 }
@@ -66,7 +71,10 @@ void listGames(HttpRequest request) {
       _sendText(request, 404, 'Games for match "$matchId" not found');
       return;
     }
-    _sendJson(request, gamesToJson(match.games));
+    var calculator = new _Calculator();
+    var results = <Game, int>{};
+    match.games.forEach((game) => results[game] = calculator.calculate(game));
+    _sendJson(request, 200, gamesWithResultsToJson(results));
   }).catchError((e) => _handleError(request, 'Error serving games for Match $matchId: ${e.toString()}'));  
 }
 
@@ -81,7 +89,7 @@ void findGame(HttpRequest request) {
       _sendText(request, 404, 'Game "$id" not found');
       return;
     }
-    _sendJson(request, gameToJson(games.first));
+    _sendJson(request, 200, gameToJson(games.first));
   }).catchError((e) => _handleError(request, 'Error serving game $id: ${e.toString()}'));
   
 }
@@ -97,8 +105,8 @@ void results(HttpRequest request) {
     _sendText(request, 404, 'Games for match "$matchId" not found');
     return;
   }
-  var result = new Calculator(match.games, match.players).calculate();
-  _sendJson(request, resultToJson(result));
+  var result = new CalculatedGames(match.games, match.players).calculate();
+  _sendJson(request, 200, resultToJson(result));
   }).catchError((e) => _handleError(request, 'Error serving results for Match $matchId: ${e.toString()}'));   
 }
 
@@ -111,8 +119,10 @@ bool _validContentType(request, contentType) {
   return true;
 }
 
-void _sendJson(request, payload) {
-  _send(request, 200, payload, ContentType.JSON);
+void _sendJson(HttpRequest request, status, payload) {
+  // allways show the latest results
+  request.response.headers.set(HttpHeaders.CACHE_CONTROL, 'private, max-age=0, no-cache');
+  _send(request, status, payload, ContentType.JSON);
 }
 
 void _sendText(request, status, msg) {

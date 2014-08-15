@@ -11,16 +11,15 @@ DEPLOY="function deploy {
     cd $DEPLOYMENT_ROOT
     sudo tar -xzf ~/$APP
     sudo chown -R dart:dart *
-    sudo service schafkopfer_server restart 2>&1 &
-    sleep 1
+    sudo service schafkopfer_server restart
     rm ~/$APP
 }"
 
-rm $BASE_DIR/build/*
+rm -rf $BASE_DIR/build/*
 
 dart --snapshot=$BASE_DIR/build/schafkopfer_server.snapshot $BASE_DIR/bin/schafkopfer_server_main.dart
 
-tar -czf $APP -C $BASE_DIR build resources
+tar -czf $APP -C $BASE_DIR build configs
 scp $APP floh@morten:~
 ssh -t floh@morten "$DEPLOY; deploy "
 rm $APP

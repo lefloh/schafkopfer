@@ -1,5 +1,8 @@
 name: schafkopfer_server
+version: 1.0.0
+author: Florian Hirsch
 description: RESTful server for schafkopfer
+homepage: utkast.de/schafkopfer
 dependencies:
   connection_pool: any
   http_server: any

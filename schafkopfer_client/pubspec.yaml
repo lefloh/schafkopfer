@@ -1,0 +1,12 @@
+name: schafkopfer_client
+version: 1.0.0
+author: Florian Hirsch
+description: The Schafkopfer Client
+homepage: utkast.de/schafkopfer
+dependencies:
+  browser: any
+  bootjack: any
+  logging: any
+  logging_handlers: any
+  schafkopfer_api:
+    path: ../schafkopfer_api
