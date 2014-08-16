@@ -1,5 +1,3 @@
-# remove pubspec.lock for an application package:
-pubspec.lock
 packages/
 *.js_
 *.js.deps
