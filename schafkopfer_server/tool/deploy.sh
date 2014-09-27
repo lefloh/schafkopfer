@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# expecting following env-variable:
+# WEB_HOST=user@host
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$SCRIPT_DIR/.."
 
@@ -20,6 +23,6 @@ rm -rf $BASE_DIR/build/*
 dart --snapshot=$BASE_DIR/build/schafkopfer_server.snapshot $BASE_DIR/bin/schafkopfer_server_main.dart
 
 tar -czf $APP -C $BASE_DIR build configs
-scp $APP floh@morten:~
-ssh -t floh@morten "$DEPLOY; deploy "
+scp $APP $WEB_HOST:~
+ssh -t $WEB_HOST "$DEPLOY; deploy "
 rm $APP

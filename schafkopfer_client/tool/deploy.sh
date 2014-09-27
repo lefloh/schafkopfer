@@ -1,9 +1,13 @@
 #!/bin/sh
 
+# expecting following env-variables:
+# BASE_DOCUMENT_ROOT=/var/www/yoursite/html
+# WEB_HOST=user@host
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$SCRIPT_DIR/.."
 
-DEPLOYMENT_ROOT=/var/www/utkast.de/html/schafkopfer
+DEPLOYMENT_ROOT=BASE_DOCUMENT_ROOT/schafkopfer
 APP=schafkopfer_client.tar.gz
 
 DEPLOY="function deploy {
@@ -21,6 +25,6 @@ pub build
 cd $BASE_DIR/build/web
 
 tar -czf $APP *
-scp $APP floh@morten:~
-ssh -t floh@morten "$DEPLOY; deploy "
+scp $APP $WEB_HOST:~
+ssh -t $WEB_HOST "$DEPLOY; deploy "
 rm $APP
